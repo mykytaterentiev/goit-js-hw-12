@@ -5,23 +5,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link href="./css/gallery.css" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Montserrat:wght@400;500;600&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/loader.css" />
+  <link rel="stylesheet" href="./css/styles.css" />
 </head>
 
 <body>
-  <form action="#" method="get" class="search-form">
-    <input type="text" id="query" class="image-query" />
-    <button type="submit" class="search-button">Search</button>
+  <form class="form">
+    <input type="text" placeholder="Search Images.." name="query" autocomplete="off" autofocus />
+    <button type="submit" class="btn">Search</button>
   </form>
-  <div class="loader"></div>
-  <div id="gallery" class="gallery"></div>
-  <div class="loader-scroll"></div>
-  <script type="module" src="./main.js"></script>
+  <div class="gallery"></div>
+  <span class="loader hidden"></span>
+  <button type="button" class="btn-load-more hidden">Load more</button>
+  <script src="./main.js" type="module"></script>
 </body>
 
 </html>
