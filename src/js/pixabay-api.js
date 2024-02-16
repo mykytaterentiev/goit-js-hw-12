@@ -22,7 +22,22 @@ async function getImages() {
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnLoadMore.addEventListener('click', loadMore);
 
-const data = await getImages();
+async function onFormSubmit(event) {
+  event.preventDefault();
+  refs.btnLoadMore.classList.add('hidden');
+  if (query === event.target.elements.query.value.trim()) {
+    event.target.reset();
+    toggleBtnLoadMore();
+    return;
+  } else {
+    query = event.target.elements.query.value.trim();
+  }
+  currentPage = 1;
+  refs.gallery.textContent = '';
+  toggleLoader();
+
+  try {
+    const data = await getImages();
     if (!query) {
       iziToast.warning({
         message: 'Sorry, you forgot to enter a search term. Please try again!',
