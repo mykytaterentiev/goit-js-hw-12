@@ -1,4 +1,4 @@
-function galleryTemplate({
+export function galleryTemplate({
   largeImageURL,
   webformatURL,
   tags,
