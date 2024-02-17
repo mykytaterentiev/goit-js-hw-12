@@ -19,3 +19,8 @@ export async function getImages() {
     console.error("Сталася помилка при отриманні зображень:", error.message);
   }
 }
+
+let query = '';
+let currentPage = 1;
+let total = 0;
+const PER_PAGE = 15;
