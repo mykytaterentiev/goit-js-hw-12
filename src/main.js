@@ -5,7 +5,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
-import { renderMarkup } from './js/render-functions';
+import { galleryTemplate } from './js/render-functions';
 
 
 const refs = {
@@ -90,6 +90,11 @@ let gallery = new SimpleLightbox('.gallery a', {
   captionPosition: 'bottom',
 });
 
+function renderMarkup(images) {
+  const markup = images.map(galleryTemplate).join('');
+  refs.gallery.insertAdjacentHTML('beforeend', markup);
+  gallery.refresh();
+}
 
 async function loadMore() {
   toggleLoader();
