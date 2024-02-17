@@ -4,8 +4,8 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
-import { getImages } from './js/pixabay-api';
-import { renderMarkup } from './js/render-functions';
+import { getImages } from './js/pixabay-api.js';
+import { renderMarkup } from './js/render-functions.js';
 
 const refs = {
   form: document.querySelector('.form'),
