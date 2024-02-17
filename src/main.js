@@ -18,6 +18,12 @@ const refs = {
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnLoadMore.addEventListener('click', loadMore);
 
+let query = '';
+let currentPage = 1;
+let total = 0;
+const PER_PAGE = 15;
+
+
 async function onFormSubmit(event) {
   event.preventDefault();
   refs.btnLoadMore.classList.add('hidden');
