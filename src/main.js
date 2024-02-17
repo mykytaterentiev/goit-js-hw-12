@@ -4,8 +4,6 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
-import { getImages } from './js/pixabay-api.js';
-import { renderMarkup } from './js/render-functions.js';
 
 const refs = {
   form: document.querySelector('.form'),
@@ -19,6 +17,26 @@ let currentPage = 1;
 let total = 0;
 const PER_PAGE = 15;
 
+async function getImages() {
+  const BASE_URL = 'https://pixabay.com/api/';
+  const API_KEY = '42132229-e88b92984f0d2a7001cb07c65';
+  const url = `${BASE_URL}?key=${API_KEY}`;
+  try {
+    const { data } = await axios.get(url, {
+      params: {
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: 'true',
+        q: query,
+        per_page: PER_PAGE,
+        page: currentPage,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Сталася помилка при отриманні зображень:", error.message);
+  }
+}
 
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnLoadMore.addEventListener('click', loadMore);
@@ -112,6 +130,12 @@ let gallery = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionPosition: 'bottom',
 });
+
+function renderMarkup(images) {
+  const markup = images.map(galleryTemplate).join('');
+  refs.gallery.insertAdjacentHTML('beforeend', markup);
+  gallery.refresh();
+}
 
 async function loadMore() {
   toggleLoader();
