@@ -17,6 +17,14 @@ function galleryTemplate({
     `;
 }
 
+let gallery = new SimpleLightbox('.gallery a', {
+  showCounter: false,
+  captionDelay: 250,
+  captions: true,
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+});
+
 export function renderMarkup(images) {
   const markup = images.map(galleryTemplate).join('');
   refs.gallery.insertAdjacentHTML('beforeend', markup);
