@@ -113,12 +113,6 @@ let gallery = new SimpleLightbox('.gallery a', {
   captionPosition: 'bottom',
 });
 
-function renderMarkup(images) {
-  const markup = images.map(galleryTemplate).join('');
-  refs.gallery.insertAdjacentHTML('beforeend', markup);
-  gallery.refresh();
-}
-
 async function loadMore() {
   toggleLoader();
   toggleBtnLoadMore();
