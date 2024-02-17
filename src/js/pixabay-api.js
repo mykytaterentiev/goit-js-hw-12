@@ -24,9 +24,3 @@ export async function getImages(query, currentPage, PER_PAGE) {
     throw error;
   }
 }
-
-
-let query = '';
-let currentPage = 1;
-let total = 0;
-const PER_PAGE = 15;
