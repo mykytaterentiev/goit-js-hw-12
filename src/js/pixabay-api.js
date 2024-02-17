@@ -1,8 +1,12 @@
+
 import axios from 'axios';
-export async function getImages() {
-  const BASE_URL = 'https://pixabay.com/api/';
-  const API_KEY = '42132229-e88b92984f0d2a7001cb07c65';
+
+const BASE_URL = 'https://pixabay.com/api/';
+const API_KEY = '42132229-e88b92984f0d2a7001cb07c65';
+
+export async function getImages(query, currentPage, PER_PAGE) {
   const url = `${BASE_URL}?key=${API_KEY}`;
+
   try {
     const { data } = await axios.get(url, {
       params: {
@@ -16,9 +20,11 @@ export async function getImages() {
     });
     return data;
   } catch (error) {
-    console.error("Сталася помилка при отриманні зображень:", error.message);
+    console.error("Сталася помилка при отриманні зображень", error.message);
+    throw error;
   }
 }
+
 
 let query = '';
 let currentPage = 1;

@@ -5,8 +5,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
-import { galleryTemplate } from './js/render-functions';
 import { renderMarkup } from './js/render-functions';
+
 
 const refs = {
   form: document.querySelector('.form'),
@@ -14,32 +14,6 @@ const refs = {
   loader: document.querySelector('.loader'),
   btnLoadMore: document.querySelector('.btn-load-more'),
 };
-
-let query = '';
-let currentPage = 1;
-let total = 0;
-const PER_PAGE = 15;
-
-async function getImages() {
-  const BASE_URL = 'https://pixabay.com/api/';
-  const API_KEY = '42132229-e88b92984f0d2a7001cb07c65';
-  const url = `${BASE_URL}?key=${API_KEY}`;
-  try {
-    const { data } = await axios.get(url, {
-      params: {
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: 'true',
-        q: query,
-        per_page: PER_PAGE,
-        page: currentPage,
-      },
-    });
-    return data;
-  } catch (error) {
-    console.error("Сталася помилка при отриманні зображень:", error.message);
-  }
-}
 
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnLoadMore.addEventListener('click', loadMore);
@@ -107,24 +81,6 @@ async function onFormSubmit(event) {
   event.target.reset();
 }
 
-function galleryTemplate({
-  largeImageURL,
-  webformatURL,
-  tags,
-  likes,
-  views,
-  comments,
-  downloads,
-}) {
-  return `<a class='gallery-link' href='${largeImageURL}'><img class='gallery-image' src='${webformatURL}' alt='${tags}'/>
-  <div class='gallery-review'>
-  <div class='gallery-review-item'><b>Likes</b> <span>${likes}</span></div>
-  <div class='gallery-review-item'><b>Views</b> <span>${views}</span></div>
-  <div class='gallery-review-item'><b>Comments</b> <span>${comments}</span></div>
-  <div class='gallery-review-item'><b>Downloads</b> <span>${downloads}</span></div>
-  </div></a>
-    `;
-}
 
 let gallery = new SimpleLightbox('.gallery a', {
   showCounter: false,
