@@ -16,3 +16,11 @@ export function galleryTemplate({
   </div></a>
     `;
 }
+
+let gallery = new SimpleLightbox('.gallery a', {
+  showCounter: false,
+  captionDelay: 250,
+  captions: true,
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+});

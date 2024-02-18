@@ -24,3 +24,7 @@ export async function getImages(query, currentPage, PER_PAGE) {
     throw error;
   }
 }
+
+
+refs.form.addEventListener('submit', onFormSubmit);
+refs.btnLoadMore.addEventListener('click', loadMore);
