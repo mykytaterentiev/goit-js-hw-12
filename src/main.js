@@ -5,6 +5,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
+import { onFormSubmit } from './js/pixabay-api';
 
 const refs = {
   form: document.querySelector('.form'),
@@ -37,7 +38,7 @@ async function onFormSubmit(event) {
 
   try {
     const data = await getImages(query);
-    if (query !== "") {
+    if (!query) {
       iziToast.warning({
         message: 'Sorry, you forgot to enter a search term. Please try again!',
         position: 'topRight',
