@@ -5,6 +5,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
+import { galleryTemplate } from './js/render-functions';
 
 
 const refs = {
@@ -39,7 +40,6 @@ async function onFormSubmit(event) {
 
   try {
     const data = await getImages(query);
-    console.log("totalhints", data.totalHits);
     if (!query) {
       iziToast.warning({
         message: 'Sorry, you forgot to enter a search term. Please try again!',
@@ -87,24 +87,24 @@ async function onFormSubmit(event) {
   event.target.reset();
 }
 
-function galleryTemplate({
-  largeImageURL,
-  webformatURL,
-  tags,
-  likes,
-  views,
-  comments,
-  downloads,
-}) {
-  return `<a class='gallery-link' href='${largeImageURL}'><img class='gallery-image' src='${webformatURL}' alt='${tags}'/>
-  <div class='gallery-review'>
-  <div class='gallery-review-item'><b>Likes</b> <span>${likes}</span></div>
-  <div class='gallery-review-item'><b>Views</b> <span>${views}</span></div>
-  <div class='gallery-review-item'><b>Comments</b> <span>${comments}</span></div>
-  <div class='gallery-review-item'><b>Downloads</b> <span>${downloads}</span></div>
-  </div></a>
-    `;
-}
+// function galleryTemplate({
+//   largeImageURL,
+//   webformatURL,
+//   tags,
+//   likes,
+//   views,
+//   comments,
+//   downloads,
+// }) {
+//   return `<a class='gallery-link' href='${largeImageURL}'><img class='gallery-image' src='${webformatURL}' alt='${tags}'/>
+//   <div class='gallery-review'>
+//   <div class='gallery-review-item'><b>Likes</b> <span>${likes}</span></div>
+//   <div class='gallery-review-item'><b>Views</b> <span>${views}</span></div>
+//   <div class='gallery-review-item'><b>Comments</b> <span>${comments}</span></div>
+//   <div class='gallery-review-item'><b>Downloads</b> <span>${downloads}</span></div>
+//   </div></a>
+//     `;
+// }
 
 let gallery = new SimpleLightbox('.gallery a', {
   showCounter: false,
@@ -121,12 +121,10 @@ function renderMarkup(images) {
 }
 
 async function loadMore() {
-  console.log("LoadMore query", query);
   toggleLoader();
   toggleBtnLoadMore();
   currentPage += 1;
   const data = await getImages(query);
-  console.log(data);
   renderMarkup(data.hits);
   toggleBtnLoadMore();
   checkBtnStatus();
