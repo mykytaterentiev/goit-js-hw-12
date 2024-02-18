@@ -15,11 +15,6 @@ const refs = {
   btnLoadMore: document.querySelector('.btn-load-more'),
 };
 
-let query = '';
-let currentPage = 1;
-let total = 0;
-const PER_PAGE = 15;
-
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnLoadMore.addEventListener('click', loadMore);
 
