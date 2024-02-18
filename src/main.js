@@ -47,13 +47,14 @@ async function onFormSubmit(event) {
       });
       toggleLoader();
       return;
-    } else if (parseInt(data.totalHits) > 0) {
-      toggleBtnLoadMore();
-      renderMarkup(data.hits);
-      total = data.totalHits;
-      checkBtnStatus();
-      toggleLoader();
-    } else {
+    }
+    // } else if (parseInt(data.totalHits) > 0) {
+    //   toggleBtnLoadMore();
+    //   renderMarkup(data.hits);
+    //   total = data.totalHits;
+    //   checkBtnStatus();
+    //   toggleLoader();
+    else {
       iziToast.error({
         message:
           'Sorry, there are no images matching your search query. Please try again!',
