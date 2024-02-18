@@ -6,7 +6,7 @@ import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
 import { galleryTemplate } from './js/render-functions';
-
+import { onFormSubmit } from './js/pixabay-api';
 
 const refs = {
   form: document.querySelector('.form'),
@@ -15,76 +15,19 @@ const refs = {
   btnLoadMore: document.querySelector('.btn-load-more'),
 };
 
-refs.form.addEventListener('submit', onFormSubmit);
-refs.btnLoadMore.addEventListener('click', loadMore);
-
 let query = '';
 let currentPage = 1;
 let total = 0;
 const PER_PAGE = 15;
 
-async function onFormSubmit(event) {
-  event.preventDefault();
-  refs.btnLoadMore.classList.add('hidden');
-  if (query === event.target.elements.query.value.trim()) {
-    event.target.reset();
-    toggleBtnLoadMore();
-    return;
-  } else {
-    query = event.target.elements.query.value.trim();
-  }
-  currentPage = 1;
-  refs.gallery.textContent = '';
-  toggleLoader();
 
-  try {
-    const data = await getImages();
-    if (!query) {
-      iziToast.warning({
-        message: 'Sorry, you forgot to enter a search term. Please try again!',
-        position: 'topRight',
-        messageSize: '16px',
-        timeout: 2000,
-      });
-      toggleLoader();
-      return;
-    } else if (parseInt(data.totalHits) > 0) {
-      toggleBtnLoadMore();
-      renderMarkup(data.hits);
-      total = data.totalHits;
-      checkBtnStatus();
-      toggleLoader();
-    } else {
-      iziToast.error({
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
-        backgroundColor: 'red',
-        messageColor: 'white',
-        messageSize: '16px',
-        iconColor: 'white',
-        iconUrl: errorIcon,
-        color: 'white',
-        timeout: 2000,
-      });
-      toggleLoader();
-    }
-  } catch (error) {
-    iziToast.error({
-      message: 'Error',
-      position: 'topRight',
-      backgroundColor: 'red',
-      messageColor: 'white',
-      messageSize: '16px',
-      iconColor: 'white',
-      iconUrl: errorIcon,
-      color: 'white',
-      timeout: 2000,
-    });
-    toggleLoader();
-  }
-  event.target.reset();
-}
+let gallery = new SimpleLightbox('.gallery a', {
+  showCounter: false,
+  captionDelay: 250,
+  captions: true,
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+});
 
 function renderMarkup(images) {
   const markup = images.map(galleryTemplate).join('');
