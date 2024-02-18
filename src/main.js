@@ -5,7 +5,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
-import { onFormSubmit } from './js/pixabay-api';
 
 const refs = {
   form: document.querySelector('.form'),
@@ -18,6 +17,27 @@ let query = '';
 let currentPage = 1;
 let total = 0;
 const PER_PAGE = 15;
+
+async function getImages() {
+  const BASE_URL = 'https://pixabay.com/api/';
+  const API_KEY = '42272856-fbb9ecaa9aa7f62044da3b204';
+  const url = `${BASE_URL}?key=${API_KEY}`;
+  try {
+    const { data } = await axios.get(url, {
+      params: {
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: 'true',
+        q: query,
+        per_page: PER_PAGE,
+        page: currentPage,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Сталася помилка при отриманні зображень:", error.message);
+  }
+}
 
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnLoadMore.addEventListener('click', loadMore);
@@ -37,7 +57,7 @@ async function onFormSubmit(event) {
   toggleLoader();
 
   try {
-    const data = await getImages(query);
+    const data = await getImages();
     if (!query) {
       iziToast.warning({
         message: 'Sorry, you forgot to enter a search term. Please try again!',
