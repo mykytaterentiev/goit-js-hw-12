@@ -36,7 +36,7 @@ async function onFormSubmit(event) {
   toggleLoader();
 
   try {
-    const data = await getImages();
+    const data = await getImages(query);
     if (!query) {
       iziToast.warning({
         message: 'Sorry, you forgot to enter a search term. Please try again!',
