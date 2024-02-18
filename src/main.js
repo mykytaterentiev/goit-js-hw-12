@@ -120,7 +120,8 @@ function renderMarkup(images) {
   gallery.refresh();
 }
 
-async function loadMore(query) {
+async function loadMore() {
+  console.log("LoadMore query", query);
   toggleLoader();
   toggleBtnLoadMore();
   currentPage += 1;
