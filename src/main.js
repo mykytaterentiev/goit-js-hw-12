@@ -7,7 +7,6 @@ import axios from 'axios';
 import { getImages } from './js/pixabay-api';
 import { galleryTemplate } from './js/render-functions';
 
-
 const refs = {
   form: document.querySelector('.form'),
   gallery: document.querySelector('.gallery'),
@@ -15,14 +14,13 @@ const refs = {
   btnLoadMore: document.querySelector('.btn-load-more'),
 };
 
-refs.form.addEventListener('submit', onFormSubmit);
-refs.btnLoadMore.addEventListener('click', loadMore);
-
 let query = '';
 let currentPage = 1;
 let total = 0;
 const PER_PAGE = 15;
 
+refs.form.addEventListener('submit', onFormSubmit);
+refs.btnLoadMore.addEventListener('click', loadMore);
 
 async function onFormSubmit(event) {
   event.preventDefault();
@@ -87,6 +85,24 @@ async function onFormSubmit(event) {
   event.target.reset();
 }
 
+function galleryTemplate({
+  largeImageURL,
+  webformatURL,
+  tags,
+  likes,
+  views,
+  comments,
+  downloads,
+}) {
+  return `<a class='gallery-link' href='${largeImageURL}'><img class='gallery-image' src='${webformatURL}' alt='${tags}'/>
+  <div class='gallery-review'>
+  <div class='gallery-review-item'><b>Likes</b> <span>${likes}</span></div>
+  <div class='gallery-review-item'><b>Views</b> <span>${views}</span></div>
+  <div class='gallery-review-item'><b>Comments</b> <span>${comments}</span></div>
+  <div class='gallery-review-item'><b>Downloads</b> <span>${downloads}</span></div>
+  </div></a>
+    `;
+}
 
 let gallery = new SimpleLightbox('.gallery a', {
   showCounter: false,
