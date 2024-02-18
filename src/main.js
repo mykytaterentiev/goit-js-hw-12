@@ -4,9 +4,6 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
-import { getImages } from './js/pixabay-api';
-import { galleryTemplate } from './js/render-functions';
-import { onFormSubmit } from './js/pixabay-api';
 
 const refs = {
   form: document.querySelector('.form'),
@@ -20,6 +17,111 @@ let currentPage = 1;
 let total = 0;
 const PER_PAGE = 15;
 
+async function getImages() {
+  const BASE_URL = 'https://pixabay.com/api/';
+  const API_KEY = '42272856-fbb9ecaa9aa7f62044da3b204';
+  const url = `${BASE_URL}?key=${API_KEY}`;
+  try {
+    const { data } = await axios.get(url, {
+      params: {
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: 'true',
+        q: query,
+        per_page: PER_PAGE,
+        page: currentPage,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Сталася помилка при отриманні зображень:", error.message);
+  }
+}
+
+refs.form.addEventListener('submit', onFormSubmit);
+refs.btnLoadMore.addEventListener('click', loadMore);
+
+async function onFormSubmit(event) {
+  event.preventDefault();
+  refs.btnLoadMore.classList.add('hidden');
+  if (query === event.target.elements.query.value.trim()) {
+    event.target.reset();
+    toggleBtnLoadMore();
+    return;
+  } else {
+    query = event.target.elements.query.value.trim();
+  }
+  currentPage = 1;
+  refs.gallery.textContent = '';
+  toggleLoader();
+
+  try {
+    const data = await getImages();
+    if (!query) {
+      iziToast.warning({
+        message: 'Sorry, you forgot to enter a search term. Please try again!',
+        position: 'topRight',
+        messageSize: '16px',
+        timeout: 2000,
+      });
+      toggleLoader();
+      return;
+    } else if (parseInt(data.totalHits) > 0) {
+      toggleBtnLoadMore();
+      renderMarkup(data.hits);
+      total = data.totalHits;
+      checkBtnStatus();
+      toggleLoader();
+    } else {
+      iziToast.error({
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
+        backgroundColor: 'red',
+        messageColor: 'white',
+        messageSize: '16px',
+        iconColor: 'white',
+        iconUrl: errorIcon,
+        color: 'white',
+        timeout: 2000,
+      });
+      toggleLoader();
+    }
+  } catch (error) {
+    iziToast.error({
+      message: 'Error',
+      position: 'topRight',
+      backgroundColor: 'red',
+      messageColor: 'white',
+      messageSize: '16px',
+      iconColor: 'white',
+      iconUrl: errorIcon,
+      color: 'white',
+      timeout: 2000,
+    });
+    toggleLoader();
+  }
+  event.target.reset();
+}
+
+function galleryTemplate({
+  largeImageURL,
+  webformatURL,
+  tags,
+  likes,
+  views,
+  comments,
+  downloads,
+}) {
+  return `<a class='gallery-link' href='${largeImageURL}'><img class='gallery-image' src='${webformatURL}' alt='${tags}'/>
+  <div class='gallery-review'>
+  <div class='gallery-review-item'><b>Likes</b> <span>${likes}</span></div>
+  <div class='gallery-review-item'><b>Views</b> <span>${views}</span></div>
+  <div class='gallery-review-item'><b>Comments</b> <span>${comments}</span></div>
+  <div class='gallery-review-item'><b>Downloads</b> <span>${downloads}</span></div>
+  </div></a>
+    `;
+}
 
 let gallery = new SimpleLightbox('.gallery a', {
   showCounter: false,
