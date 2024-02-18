@@ -122,7 +122,7 @@ async function loadMore() {
   toggleLoader();
   toggleBtnLoadMore();
   currentPage += 1;
-  const data = await getImages();
+  const data = await getImages(query);
   renderMarkup(data.hits);
   toggleBtnLoadMore();
   checkBtnStatus();
