@@ -125,6 +125,7 @@ async function loadMore(query) {
   toggleBtnLoadMore();
   currentPage += 1;
   const data = await getImages(query);
+  console.log(data);
   renderMarkup(data.hits);
   toggleBtnLoadMore();
   checkBtnStatus();
