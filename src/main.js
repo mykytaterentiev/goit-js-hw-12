@@ -119,11 +119,11 @@ function renderMarkup(images) {
   gallery.refresh();
 }
 
-async function loadMore() {
+async function loadMore(query) {
   toggleLoader();
   toggleBtnLoadMore();
   currentPage += 1;
-  const data = await getImages(q);
+  const data = await getImages(query);
   renderMarkup(data.hits);
   toggleBtnLoadMore();
   checkBtnStatus();
