@@ -38,6 +38,7 @@ async function onFormSubmit(event) {
 
   try {
     const data = await getImages(query);
+    console.log("totalhints", data.totalHits);
     if (!query) {
       iziToast.warning({
         message: 'Sorry, you forgot to enter a search term. Please try again!',
@@ -47,14 +48,13 @@ async function onFormSubmit(event) {
       });
       toggleLoader();
       return;
-    }
-    // } else if (parseInt(data.totalHits) > 0) {
-    //   toggleBtnLoadMore();
-    //   renderMarkup(data.hits);
-    //   total = data.totalHits;
-    //   checkBtnStatus();
-    //   toggleLoader();
-    else {
+    } else if (parseInt(data.totalHits) > 0) {
+      toggleBtnLoadMore();
+      renderMarkup(data.hits);
+      total = data.totalHits;
+      checkBtnStatus();
+      toggleLoader();
+    } else {
       iziToast.error({
         message:
           'Sorry, there are no images matching your search query. Please try again!',
@@ -123,7 +123,7 @@ async function loadMore() {
   toggleLoader();
   toggleBtnLoadMore();
   currentPage += 1;
-  const data = await getImages(query);
+  const data = await getImages(q);
   renderMarkup(data.hits);
   toggleBtnLoadMore();
   checkBtnStatus();
