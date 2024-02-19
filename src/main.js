@@ -6,6 +6,7 @@ import errorIcon from './img/bi_x-octagon.svg';
 import axios from 'axios';
 import { getImages } from './js/pixabay-api';
 import { galleryTemplate } from './js/render-functions';
+import gallery from './js/render-functions';
 
 
 const refs = {
@@ -106,13 +107,13 @@ async function onFormSubmit(event) {
 //     `;
 // }
 
-let gallery = new SimpleLightbox('.gallery a', {
-  showCounter: false,
-  captionDelay: 250,
-  captions: true,
-  captionsData: 'alt',
-  captionPosition: 'bottom',
-});
+// let gallery = new SimpleLightbox('.gallery a', {
+//   showCounter: false,
+//   captionDelay: 250,
+//   captions: true,
+//   captionsData: 'alt',
+//   captionPosition: 'bottom',
+// });
 
 function renderMarkup(images) {
   const markup = images.map(galleryTemplate).join('');
